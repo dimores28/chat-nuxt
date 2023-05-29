@@ -1,29 +1,77 @@
 <template>
   <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <h1>Title</h1>
-      <v-btn @click="clickButton">
-        new message
-      </v-btn>
+    <v-flex xs12 sm8>
+      <v-card min-width="400">
+        <v-card-title><h2>Nuxt chat</h2></v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              v-model="name"
+              :counter="16"
+              :rules="nameRules"
+              label="Ваше имя:"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="room"
+              :rules="roomRules"
+              label="Введите комнату"
+              required
+            ></v-text-field>
+
+            <v-btn
+              :disabled="!valid"
+              color="primary"
+              class="mr-4"
+              @click="submit"
+            >
+              Войти
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
-  components: {},
-  sockets: {
-        connect: function () {
-            console.log('socket connected')
-        }
+  loyout: "empty",
+  head: {
+    title: "Добро пожаловать в Nuxt chat"
   },
+  sockets: {
+    connect: function() {
+      console.log("socket connected");
+    }
+  },
+  data: () => ({
+    valid: true,
+    name: "",
+    nameRules: [
+      v => !!v || "Введите имя",
+      v => (v && v.length <= 16) || "Имя не должно превышать 16 символов"
+    ],
+    room: "",
+    roomRules: [v => !!v || "введите комнату"]
+  }),
+
   methods: {
-        clickButton: function (data) {
-            // $socket is socket.io-client instance
-            this.$socket.emit('emit_method', {
-              text: "client"
-            })
-        }
+    ...mapMutations(["setUser"]),
+    submit() {
+      if (this.$refs.form.validate()) {
+        const user = {
+          name: this.name,
+          room: this.room
+        };
+
+        this.setUser(user);
+        this.$router.push("/chat");
+      }
+    }
   }
 };
 </script>
