@@ -1,9 +1,13 @@
 <template>
-  <h1>Chat page {{ user.name }}</h1>
+  <div>
+    <ul>
+      <li v-for="m in messages" :key="m.text">{{ m.text }}</li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   middleware: ["chat"],
   head() {
@@ -11,6 +15,8 @@ export default {
       title: `Room ${this.user.room}`
     };
   },
-  computed: mapState(["user"])
+  computed: {
+    ...mapGetters({ messages: "getMessages", user: "getUser" })
+  }
 };
 </script>
