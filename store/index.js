@@ -15,11 +15,14 @@ export const mutations = {
    clearData(state) {
       state.user = {};
       state.messages = [];
-   }
+   },
+  SOCKET_newMessage(state, message) {
+    state.messages.push(message)
+  }
 }
 
-export const actions = {
-   SOCKET_NewMessage(context, data) {
-      console.log(data);
-   }
-}
+// export const actions = {
+//    SOCKET_NewMessage(context, data) {
+//       console.log(data);
+//    }
+// }
