@@ -17,17 +17,17 @@ io.on('connection', socket => {
       .emit('newMessage', m('admin', `Пользователь ${data.name} зашел.`));
   });
 
-  socket.on('emit_method', data => {
+  socket.on('createMessage', data => {
     setTimeout(()=> {
-      socket.emit('NewMessage', {
+      socket.emit('newMessage', {
         text: data.text + ' server',
       });
     }, 500);
   });
 
-  socket.emit('NewMessage', {
-    text: 'WHAT',
-  });
+  // socket.emit('newMessage', {
+  //   text: 'WHAT',
+  // });
 })
 
 module.exports = {

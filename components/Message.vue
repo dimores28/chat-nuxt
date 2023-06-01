@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: "Message",
   props: {
     name: String,
     text: String,
@@ -28,7 +29,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
 .system {
   margin-bottom: 1rem;
 
