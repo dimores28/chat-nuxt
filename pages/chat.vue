@@ -1,10 +1,16 @@
 <template>
   <div class="c-wrap">
     <div class="c-chat">
-      <Message v-for="m in messages" :key="m.text" :name="m.name" :text="m.text" owner/>
+      <Message
+        v-for="m in messages"
+        :key="m.text"
+        :name="m.name"
+        :text="m.text"
+        :owner="m.id === user.id"
+      />
     </div>
     <div class="c-form">
-      <ChatForm/>
+      <ChatForm />
     </div>
   </div>
 </template>
