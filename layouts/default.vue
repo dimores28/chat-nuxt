@@ -9,7 +9,7 @@
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <v-icon :color="u.id === 2 ? 'primary' : 'grey'"
+            <v-icon :color="u.id === user.id ? 'primary' : 'grey'"
               >chat_bubble</v-icon
             >
           </v-list-tile-action>
@@ -41,27 +41,19 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      drawer: true,
-      users: [
-        {
-          id: 1,
-          name: "Ivan"
-        },
-        {
-          id: 2,
-          name: "Semen"
-        }
-      ]
+      drawer: true
     };
   },
   computed: {
-    ...mapGetters({ user: "getUser" })
+    ...mapGetters({ user: "getUser", users: "getUsers" })
   },
   methods: {
     ...mapMutations(["clearData"]),
     exit() {
-      this.$router.push("/?message=leftChat");
-      this.clearData();
+      this.$socket.emit("userLeft", this.user.id, () => {
+        this.$router.push("/?message=leftChat");
+        this.clearData();
+      });
     }
   }
 };
