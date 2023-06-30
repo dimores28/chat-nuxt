@@ -1,6 +1,11 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
+      <v-snackbar v-model="snackbar" :timeout="6000" top>
+          {{ message }}
+          <v-btn color="pink" flat @click="snackbar = false">Закрыть</v-btn>
+      </v-snackbar>
+
       <v-card min-width="400">
         <v-card-title><h2>Nuxt chat</h2></v-card-title>
         <v-card-text>
@@ -50,6 +55,8 @@ export default {
   },
   data: () => ({
     valid: true,
+    snackbar: false,
+    message: "",
     name: "",
     nameRules: [
       v => !!v || "Введите имя",
@@ -79,6 +86,18 @@ export default {
         });
       }
     }
-  }
+  },
+  mounted() {
+    const { message } = this.$route.query;
+    console.log(message)
+
+    if (message === "noUser") {
+      this.message = "Введите данные";
+    } else if (message === "leftChat") {
+      this.message = "Вы вышли из чата";
+    }
+
+    this.snackbar = !!this.message;
+  },
 };
 </script>
